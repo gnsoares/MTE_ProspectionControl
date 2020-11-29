@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     # third-party
     'django_extensions',
     # apps
-    'core',
+    'prospection',
     'config',
 ]
 
