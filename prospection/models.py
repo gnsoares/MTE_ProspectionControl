@@ -37,10 +37,12 @@ class Prospector(models.Model):
         """
         Check if any company of this prospector has delays.
         """
-        for c in Company.objects.filter(prospector=self):
-            if c.needs_reminder:
-                return True
-        return False
+        return any(
+            map(
+                lambda c: c.needs_reminder,
+                Company.objects.filter(prospector=self)
+            )
+        )
 
     @property
     def contact_count(self) -> int:
@@ -141,6 +143,27 @@ class Company(models.Model):
 
     class Meta:
         verbose_name_plural = 'companies'
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class Activity(models.Model):
+    """
+    Activity model.
+    """
+
+    # activity information
+    name = models.CharField(max_length=100, unique=True)
+
+    # prospection information
+    prospector = models.ForeignKey(Prospector,
+                                   on_delete=models.SET_NULL,
+                                   null=True,
+                                   blank=True)
+
+    class Meta:
+        verbose_name_plural = 'activities'
 
     def __str__(self) -> str:
         return self.name
