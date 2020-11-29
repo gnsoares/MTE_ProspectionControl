@@ -3,11 +3,13 @@
 #
 # Python std library
 import datetime as dt
+from json.decoder import JSONDecodeError
 
 # Django
 from django.db import models
 
 # Project
+from trello_helper import add_label_to_card, get_card, remove_card_label
 from utils import get_choices_from_store, get_store
 
 
@@ -140,6 +142,66 @@ class Company(models.Model):
         """
         self.last_activity = dt.date.today()
         self.save()
+
+    def check_update(self) -> None:
+        """
+        Check if this company had any activity and update its stage.
+        """
+        # get configuration store
+        store = get_store()
+
+        # get prospection progress graph
+        progress_graph = store['stages']['graph']
+
+        # current stage is not terminal: check update
+        if self.stage in progress_graph.keys():
+
+            # get company card
+            try:
+                card = get_card(self.card_id).json()
+
+            # could not get company card: abort
+            except JSONDecodeError:
+                print(f'{self.name} não presente no quadro!')
+                return
+
+            # get card labels
+            labels = card['labels']
+
+            # initialize stage label checker
+            has_stage_label = False
+
+            # check if any of the labels are of a new stage
+            for label in labels:
+
+                # found stage label: check for update
+                if label['name'] in store['labels']['stage-list']:
+
+                    # is valid following stage: update stage
+                    if label['name'] in progress_graph[self.stage]:
+                        self.turn_updated()
+                        self.stage = label['name']
+                        self.save()
+
+                    # update stage label checker
+                    has_stage_label = True
+
+            # remove any label prior to the current state
+            for label in labels:
+                if label['name'] in store['labels']['stage-list'] \
+                   and label['name'] != self.stage:
+                    remove_card_label(self.card_id, label['id'])
+
+            # no stage label: post initial
+            if not has_stage_label:
+                add_label_to_card(self.card_id,
+                                  store['labels']['initial']['id'])
+
+            # card has a new comment: update
+            if card['badges']['comments'] > self.comments_number:
+                self.turn_updated()
+                self.comments_number = card['badges']['comments']
+                self.save()
 
     class Meta:
         verbose_name_plural = 'companies'
