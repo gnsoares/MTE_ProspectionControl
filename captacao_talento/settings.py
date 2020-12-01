@@ -75,7 +75,7 @@ ROOT_URLCONF = 'captacao_talento.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['captacao_talento/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
