@@ -21,6 +21,10 @@
         "list": [],
         "choices": {}
     },
+    "closed-table": {
+        "id": "",
+        "range": ""
+    },
     "deadlines": {
         "attention": 8,
         "urgent": 15
