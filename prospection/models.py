@@ -167,3 +167,63 @@ class Activity(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+class Contract(models.Model):
+    """
+    Contract model.
+    """
+
+    # company reference
+    company = models.OneToOneField(Company,
+                                   on_delete=models.CASCADE)
+
+    # trello card id
+    card_id = models.CharField(max_length=100)
+
+    # prospection information
+    contractor = models.ForeignKey(Prospector,
+                                   on_delete=models.SET_NULL,
+                                   limit_choices_to={'is_contractor': True},
+                                   related_name='contractor_contracts',
+                                   related_query_name='contractor_contract',
+                                   null=True,
+                                   blank=True)
+    postseller = models.ForeignKey(Prospector,
+                                   on_delete=models.SET_NULL,
+                                   limit_choices_to={'is_postseller': True},
+                                   related_name='posteller_contracts',
+                                   related_query_name='posteller_contract',
+                                   null=True,
+                                   blank=True)
+    date_closed = models.DateField(default=dt.date.today)
+
+    # payment information
+    intake = models.PositiveIntegerField()
+    payday = models.DateField(blank=True, null=True)
+    contract_type = models.CharField(
+        max_length=100,
+        choices=get_choices_from_store('contracts')
+    )
+    fee_type = models.CharField(max_length=100,
+                                choices=get_choices_from_store('fees'))
+    payment_form = models.CharField(
+        max_length=100,
+        choices=get_choices_from_store('payment-forms'),
+        blank=True
+    )
+    needs_receipt = models.BooleanField(default=False)
+
+    # exposition information
+    stand_size = models.PositiveSmallIntegerField(blank=True, null=True)
+    stand_pos = models.CharField(max_length=100, blank=True, null=True)
+    custom_stand = models.BooleanField(default=False)
+    activities = models.ManyToManyField(Activity)
+
+    # misc
+    observations = models.TextField(blank=True)
+
+    def __str__(self) -> str:
+        if self.company.name.endswith('s'):
+            return f'{self.company.name}\' contract'
+        return f'{self.company.name}\'s contract'
