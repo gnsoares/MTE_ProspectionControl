@@ -23,7 +23,8 @@
     },
     "closed-table": {
         "id": "",
-        "range": ""
+        "range": "",
+        "url": ""
     },
     "deadlines": {
         "attention": 8,
@@ -40,6 +41,12 @@
         "updated": {},
         "attention": {},
         "urgent": {}
+    },
+    "material": {
+        "email-model": "",
+        "manual": "",
+        "media-kit": "",
+        "proposal": ""
     },
     "payment-forms": {
         "list": [],
