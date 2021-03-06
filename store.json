@@ -14,8 +14,8 @@
         }
     },
     "categories": {
-        "list": [],
-        "choices": {}
+        "list": ["generic"],
+        "choices": {"empty": "", "generic": "generic"}
     },
     "contracts": {
         "list": [],
