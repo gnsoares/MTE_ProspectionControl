@@ -1,0 +1,59 @@
+{% extends "base_generic.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+  <!-- Main row -->
+  <div class="row">
+    <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="card card-danger">
+        <div class="card-header">
+          <h3 class="card-title">Formulário</h3>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form action="{{ action }}" method="post">
+          <div class="card-body">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group">
+              {{ form.name.errors }}
+              <label for="{{ form.name.id_for_label }}">Nome</label>
+              {% render_field form.name class="form-control" placeholder="Nome do(a) captador(a)" %}
+            </div>
+            <div class="form-group">
+              {{ form.email.errors }}
+              <label for="{{ form.email.id_for_label }}">E-mail</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                </div>
+                {% render_field form.email class="form-control" placeholder="E-mail" %}
+              </div>
+            </div>
+            <div class="form-group">
+              {{ form.is_seller.errors }}
+              <label for="{{ form.is_seller.id_for_label }}">Vendas</label>
+              {% render_field form.is_seller class="form-control" %}
+            </div>
+            <div class="form-group">
+              {{ form.is_contractor.errors }}
+              <label for="{{ form.is_contractor.id_for_label }}">Contratos</label>
+              {% render_field form.is_contractor class="form-control" %}
+            </div>
+            <div class="form-group">
+              {{ form.is_postseller.errors }}
+              <label for="{{ form.is_postseller.id_for_label }}">Pós-Vendas</label>
+              {% render_field form.is_postseller class="form-control" %}
+            </div>
+            <div class="card-footer">
+              <button type="submit" class="btn btn-danger">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- /.card -->
+  <!-- /.row (main row) -->
+{% endblock %}
