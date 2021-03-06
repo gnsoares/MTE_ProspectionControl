@@ -21,6 +21,14 @@ STORE_JSON = 'store.json'
 #
 # CODE
 #
+def get_choices_from_store(field: str) -> tuple:
+    """
+    Get the possible choices for a field from store.
+    """
+    choices: dict = get_store()[field]['choices']
+    return tuple([(k, v) for k, v in choices.items()])
+
+
 def get_env_var(var: str) -> Any:
     """
     Get the environment variable or return exception.
