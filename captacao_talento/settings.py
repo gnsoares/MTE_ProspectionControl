@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # third-party
     'django_extensions',
+    'widget_tweaks',
+    'django_select2',
     # apps
     'prospection',
     'config',
