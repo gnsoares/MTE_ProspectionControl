@@ -1,1 +1,1 @@
-web: gunicorn captacao_talento.wsgi --log-file -
+web: gunicorn prospection_control.wsgi --log-file -

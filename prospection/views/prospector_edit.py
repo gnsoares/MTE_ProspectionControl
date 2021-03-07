@@ -11,7 +11,7 @@ from django.views import View
 
 
 # Project
-from captacao_talento.views.common_context import COMMON_CONTEXT
+from prospection_control.views.common_context import COMMON_CONTEXT
 from prospection.forms.prospector_edit \
     import ProspectorEdit as ProspectorEditForm
 from prospection.models import Prospector

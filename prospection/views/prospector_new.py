@@ -11,7 +11,7 @@ from django.views import View
 
 
 # Project
-from captacao_talento.views.common_context import COMMON_CONTEXT
+from prospection_control.views.common_context import COMMON_CONTEXT
 from prospection.forms.prospector_new import ProspectorNew as ProspectorNewForm
 from prospection.models import Prospector
 from trello_helper import post_list
