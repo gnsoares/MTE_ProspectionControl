@@ -1,8 +1,16 @@
 #
 # IMPORTS
 #
+# Python std library
+import datetime as dt
+from json.decoder import JSONDecodeError
+
 # Django
 from django.db import models
+
+# Project
+from trello import add_label_to_card, get_card, remove_card_label
+from utils import get_choices_from_store, get_store
 
 
 #
@@ -25,6 +33,178 @@ class Prospector(models.Model):
     # trello lists ids
     list_id_sales = models.CharField(max_length=100, blank=True, null=True)
     list_id_contracts = models.CharField(max_length=100, blank=True, null=True)
+
+    @property
+    def has_delays(self) -> bool:
+        """
+        Check if any company of this prospector has delays.
+        """
+        return any(
+            map(
+                lambda c: c.needs_reminder,
+                Company.objects.filter(prospector=self)
+            )
+        )
+
+    @property
+    def contact_count(self) -> int:
+        """
+        Get the number of companies that this prospector is in contact with.
+        """
+        return Company.objects.filter(prospector=self).count()
+
+    @property
+    def contact_list(self) -> list:
+        """
+        Get the list of companies that this prospector is in contact with.
+        """
+        return list(Company.objects.filter(prospector=self))
+
+    @property
+    def closed_count(self) -> int:
+        """
+        Get the number of companies that this prospector closed contracts with.
+        """
+        return Company.objects.filter(prospector=self,
+                                      stage=get_store()['closed']).count()
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class Company(models.Model):
+    """
+    Company model.
+    """
+
+    # company information
+    name = models.CharField(max_length=100, unique=True)
+    category = models.CharField(max_length=100,
+                                choices=get_choices_from_store('categories'),
+                                blank=True)
+    main_contact = models.EmailField(blank=True)
+
+    # trello card id
+    card_id = models.CharField(max_length=100)
+
+    # prospection information
+    prospector = models.ForeignKey(Prospector,
+                                   on_delete=models.SET_NULL,
+                                   limit_choices_to={'is_seller': True},
+                                   related_name='companies',
+                                   related_query_name='company',
+                                   null=True)
+    stage = models.CharField(max_length=100,
+                             choices=get_choices_from_store('stages'),
+                             default=get_store()['stages']['initial'])
+    last_activity = models.DateField(default=dt.date.today)
+    comments_number = models.PositiveSmallIntegerField(default=0)
+
+    @property
+    def inactive_time(self) -> dt.timedelta:
+        """
+        Get the time that the contact with this company has been inactive.
+        """
+        return dt.date.today() - self.last_activity
+
+    @property
+    def needs_reminder(self) -> bool:
+        """
+        See if this company prospector needs a reminder.
+        """
+        return not (
+            (self.inactive_time.days < get_store()['deadlines']['urgent'])
+            or (self.stage in get_store()['stages']['no-reminder'])
+        )
+
+    @property
+    def status_label(self) -> str:
+        """
+        Get the label corresponding to this company contact status.
+        """
+        # get configuration store
+        store = get_store()
+
+        # is inactive for less time than attention deadline: return updated
+        if self.inactive_time.days < store['deadlines']['attention']:
+            return 'updated'
+
+        # is inactive for less time than urgent deadline: return attention
+        if self.inactive_time.days < store['deadlines']['urgent']:
+            return 'attention'
+
+        # is inactive for more time than urgent deadline: return urgent
+        return 'urgent'
+
+    def turn_updated(self) -> None:
+        """
+        Turn this company updated.
+        """
+        self.last_activity = dt.date.today()
+        self.save()
+
+    def check_update(self) -> None:
+        """
+        Check if this company had any activity and update its stage.
+        """
+        # get configuration store
+        store = get_store()
+
+        # get prospection progress graph
+        progress_graph = store['stages']['graph']
+
+        # current stage is not terminal: check update
+        if self.stage in progress_graph.keys():
+
+            # get company card
+            try:
+                card = get_card(self.card_id).json()
+
+            # could not get company card: abort
+            except JSONDecodeError:
+                print(f'{self.name} não presente no quadro!')
+                return
+
+            # get card labels
+            labels = card['labels']
+
+            # initialize stage label checker
+            has_stage_label = False
+
+            # check if any of the labels are of a new stage
+            for label in labels:
+
+                # found stage label: check for update
+                if label['name'] in store['labels']['stage-list']:
+
+                    # is valid following stage: update stage
+                    if label['name'] in progress_graph[self.stage]:
+                        self.turn_updated()
+                        self.stage = label['name']
+                        self.save()
+
+                    # update stage label checker
+                    has_stage_label = True
+
+            # remove any label prior to the current state
+            for label in labels:
+                if label['name'] in store['labels']['stage-list'] \
+                   and label['name'] != self.stage:
+                    remove_card_label(self.card_id, label['id'])
+
+            # no stage label: post initial
+            if not has_stage_label:
+                add_label_to_card(self.card_id,
+                                  store['labels']['initial']['id'])
+
+            # card has a new comment: update
+            if card['badges']['comments'] > self.comments_number:
+                self.turn_updated()
+                self.comments_number = card['badges']['comments']
+                self.save()
+
+    class Meta:
+        verbose_name_plural = 'companies'
 
     def __str__(self) -> str:
         return self.name
