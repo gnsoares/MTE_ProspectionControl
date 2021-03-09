@@ -1,0 +1,13 @@
+
+env/
+**/migrations
+**/__pycache__
+.env
+
+*.pickle
+*.sqlite3
+*.db
+
+credentials.json
+
+.vscode
