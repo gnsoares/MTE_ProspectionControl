@@ -208,3 +208,24 @@ class Company(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+
+class Activity(models.Model):
+    """
+    Activity model.
+    """
+
+    # activity information
+    name = models.CharField(max_length=100, unique=True)
+
+    # prospection information
+    prospector = models.ForeignKey(Prospector,
+                                   on_delete=models.SET_NULL,
+                                   null=True,
+                                   blank=True)
+
+    class Meta:
+        verbose_name_plural = 'activities'
+
+    def __str__(self) -> str:
+        return self.name
