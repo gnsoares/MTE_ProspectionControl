@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_select2',
     # apps
+    'config',
     'prospection',
 ]
 
