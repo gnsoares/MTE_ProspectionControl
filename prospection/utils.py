@@ -2,7 +2,15 @@
 # IMPORTS
 #
 # Python std library
+from os import path
+import pickle
 from random import choice
+
+# Google Sheets API
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
+
 
 # Project
 from .models import Company, Prospector
@@ -70,3 +78,88 @@ def label_update(board_id: str) -> None:
         if not found:
             add_label_to_card(card['id'],
                               store['labels'][company.status_label]['id'])
+
+
+def sheet_update(company):
+    """
+    """
+    # get configuration store
+    store = get_store()
+
+    # get spreadsheet and API information
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+    SPREADSHEET_ID = store['closed-table']['id']
+    RANGE_NAME = store['closed-table']['range']
+    creds = None
+
+    # The file token.pickle stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    if path.exists('token.pickle'):
+        with open('token.pickle', 'rb') as token:
+            creds = pickle.load(token)
+
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(
+                'credentials.json',
+                SCOPES
+            )
+            creds = flow.run_local_server(port=0)
+
+        # Save the credentials for the next run
+        with open('token.pickle', 'wb') as token:
+            pickle.dump(creds, token)
+
+    # call the Sheets API
+    service = build('sheets', 'v4', credentials=creds)
+    sheet = service.spreadsheets()
+
+    # get spreadsheet
+    result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
+                                range=RANGE_NAME).execute()
+
+    # get spreadsheet values
+    values = result.get('values', [])
+
+    # get company information
+    row = [
+        company.name,
+        company.category,
+        company.main_contact,
+        company.seller.name,
+        company.contract.contractor.name,
+        company.contract.postseller.name,
+        company.contract.fee_type,
+        company.contract.contract_type,
+        company.contract.intake,
+        company.contract.payment_form,
+        (company.contract.payday.strftime('%d/%m/%Y')
+         if company.contract.payday
+         else ''),
+        company.contract.stand_size,
+        company.contract.stand_pos,
+        company.contract.custom_stand,
+        company.contract.needs_receipt,
+    ]
+
+    # company is in the sheet: update values in the correct row
+    for i, value in enumerate(values):
+        if value[0] == company.name:
+            values[i] = row
+            break
+
+    # company not in the sheet put in new row
+    else:
+        values.append(row)
+
+    # update sheet
+    result = sheet.values().update(
+        spreadsheetId=SPREADSHEET_ID,
+        range=RANGE_NAME,
+        valueInputOption='USER_ENTERED',
+        body={'values': values},
+    ).execute()
