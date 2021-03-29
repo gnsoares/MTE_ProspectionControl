@@ -3,6 +3,8 @@
 import os
 import sys
 
+from store import get_store
+
 
 def main():
     """Run administrative tasks."""
@@ -20,4 +22,5 @@ def main():
 
 
 if __name__ == '__main__':
+    get_store()
     main()

@@ -9,8 +9,9 @@ from json.decoder import JSONDecodeError
 from django.db import models
 
 # Project
+from store import store
 from trello import add_label_to_card, get_card, remove_card_label
-from utils import get_choices_from_store, get_store
+from utils import get_choices_from_store
 
 
 #
@@ -66,7 +67,7 @@ class Prospector(models.Model):
         Get the number of companies that this prospector closed contracts with.
         """
         return Company.objects.filter(prospector=self,
-                                      stage=get_store()['closed']).count()
+                                      stage=store['closed']).count()
 
     def __str__(self) -> str:
         return self.name
@@ -96,7 +97,7 @@ class Company(models.Model):
                                    null=True)
     stage = models.CharField(max_length=100,
                              choices=get_choices_from_store('stages'),
-                             default=get_store()['stages']['initial'])
+                             default=store['stages']['initial'])
     last_activity = models.DateField(default=dt.date.today)
     comments_number = models.PositiveSmallIntegerField(default=0)
 
@@ -113,8 +114,8 @@ class Company(models.Model):
         See if this company prospector needs a reminder.
         """
         return not (
-            (self.inactive_time.days < get_store()['deadlines']['urgent'])
-            or (self.stage in get_store()['stages']['no-reminder'])
+            (self.inactive_time.days < store['deadlines']['urgent'])
+            or (self.stage in store['stages']['no-reminder'])
         )
 
     @property
@@ -122,9 +123,6 @@ class Company(models.Model):
         """
         Get the label corresponding to this company contact status.
         """
-        # get configuration store
-        store = get_store()
-
         # is inactive for less time than attention deadline: return updated
         if self.inactive_time.days < store['deadlines']['attention']:
             return 'updated'
@@ -147,9 +145,6 @@ class Company(models.Model):
         """
         Check if this company had any activity and update its stage.
         """
-        # get configuration store
-        store = get_store()
-
         # get prospection progress graph
         progress_graph = store['stages']['graph']
 

@@ -14,8 +14,8 @@ from django.views import View
 from prospection.forms.company_new import CompanyNew as CompanyNewForm
 from prospection.models import Company
 from prospection_control.views.common_context import COMMON_CONTEXT
+from store import store
 from trello import post_card
-from utils import get_store
 
 
 #
@@ -60,7 +60,7 @@ class CompanyNew(View):
             # create company card and save its id
             response = post_card(
                 company.name,
-                get_store()['boards']['sales']['id']
+                store['boards']['sales']['id']
             )
             company_card = response.json()
             company.card_id = company_card['id']

@@ -14,8 +14,8 @@ from google.auth.transport.requests import Request
 
 # Project
 from .models import Company, Prospector
+from store import store
 from trello import add_label_to_card, get_board_cards, remove_card_label
-from utils import get_store
 
 
 #
@@ -40,9 +40,6 @@ def label_update(board_id: str) -> None:
     """
     Update status labels of the cards of a board.
     """
-    # get configuration store
-    store = get_store()
-
     # get board cards
     cards = get_board_cards(board_id).json()
 
@@ -83,9 +80,6 @@ def label_update(board_id: str) -> None:
 def sheet_update(company):
     """
     """
-    # get configuration store
-    store = get_store()
-
     # get spreadsheet and API information
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     SPREADSHEET_ID = store['closed-table']['id']

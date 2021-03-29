@@ -15,7 +15,7 @@ from prospection.forms.company_edit \
     import CompanyEdit as CompanyEditForm
 from prospection.models import Company, Contract
 from prospection_control.views.common_context import COMMON_CONTEXT
-from utils import get_store
+from store import store
 
 
 #
@@ -67,7 +67,7 @@ class CompanyEdit(View):
                 **COMMON_CONTEXT,
                 'page_name': self.title.format(company.name),
                 'action': request.path,
-                'is_closed': company.stage == get_store()['stages']['closed'],
+                'is_closed': company.stage == store['stages']['closed'],
                 'form': form,
             },
         )

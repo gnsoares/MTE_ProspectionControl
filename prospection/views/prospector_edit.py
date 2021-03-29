@@ -15,8 +15,8 @@ from prospection.forms.prospector_edit \
     import ProspectorEdit as ProspectorEditForm
 from prospection.models import Prospector
 from prospection_control.views.common_context import COMMON_CONTEXT
+from store import store
 from trello import post_list
-from utils import get_store
 
 
 #
@@ -74,7 +74,7 @@ class ProspectorEdit(View):
             if not prospector.is_seller and form.cleaned_data['is_seller']:
                 response = post_list(
                     prospector.name,
-                    get_store()['boards']['sales']['id']
+                    store['boards']['sales']['id']
                 )
                 prospector_sales_list = response.json()
                 prospector.list_id_sales = prospector_sales_list['id']
@@ -91,7 +91,7 @@ class ProspectorEdit(View):
                form.cleaned_data['is_contractor']:
                 response = post_list(
                     prospector.name,
-                    get_store()['boards']['contracts']['id']
+                    store['boards']['contracts']['id']
                 )
                 prospector_contracts_list = response.json()
                 prospector.list_id_contracts = prospector_contracts_list['id']

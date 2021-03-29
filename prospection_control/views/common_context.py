@@ -5,13 +5,12 @@
 import os
 
 # Project
-from utils import get_store
+from store import store
 
 
 #
 # CODE
 #
-store = get_store()
 COMMON_CONTEXT = {
     'contact': os.environ['CONTACT'],
     'contacts_table_url': store['closed-table']['url'],
