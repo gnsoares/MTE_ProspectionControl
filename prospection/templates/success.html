@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+  <h4>{{ message }}</h4>
+  <h6>
+    <a href="{{ do_more.url }}">{{ do_more.text }}</a>
+  </h6>
+  <h6>
+    <a href="/">Retornar à Dashboard</a>
+  </h6>
+  <h6>
+    <a href="javascript:history.back()">Voltar</a>
+  </h6>
+{% endblock %}

@@ -11,6 +11,7 @@ from .views.company_select import CompanySelect
 from .views.prospector_edit import ProspectorEdit
 from .views.prospector_new import ProspectorNew
 from .views.prospector_select import ProspectorSelect
+from .views.success import success
 
 
 #
@@ -32,4 +33,9 @@ urlpatterns = [
     path('prospectors',
          ProspectorSelect.as_view(),
          name='prospector_select'),
+
+    # success
+    path('<str:object>/<str:action>/<int:id>/success/',
+         success,
+         name='success'),
 ]
