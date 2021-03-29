@@ -286,7 +286,7 @@ class Contract(models.Model):
     date_closed = models.DateField(default=dt.date.today)
 
     # payment information
-    intake = models.PositiveIntegerField()
+    intake = models.PositiveIntegerField(default=0)
     payday = models.DateField(blank=True, null=True)
     contract_type = models.CharField(
         max_length=100,

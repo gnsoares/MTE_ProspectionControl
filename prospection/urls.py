@@ -5,6 +5,7 @@
 from django.urls import path
 
 # Project
+from .views.company_close import CompanyClose
 from .views.company_edit import CompanyEdit
 from .views.company_new import CompanyNew
 from .views.company_select import CompanySelect
@@ -19,6 +20,7 @@ from .views.success import success
 #
 urlpatterns = [
     # companies
+    path('companies/close/', CompanyClose.as_view(), name='company_close'),
     path('companies/edit/<int:id>/',
          CompanyEdit.as_view(),
          name='company_edit'),
