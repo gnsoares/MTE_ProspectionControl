@@ -1,0 +1,80 @@
+{% extends "base_generic.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block head %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.css' %}">
+<style>
+  @media (max-width: 600.1px){
+    .table .optional-col {
+      display: none;
+    }
+  }
+  @media {
+    .card-my {
+      display: block;
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+</style>
+{% endblock head %}
+
+{% block content %}
+  <!-- Main row -->
+  <div class="row">
+      <div class="col-md-12">
+      <!-- general form elements -->
+      <div class="card card-danger">
+          <div class="card-header">
+          <h3 class="card-title">Selecione o(a) Captador(a)</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0 card-my">
+          <table id="ProspectorSelect" class="table table-striped table-hover">
+              <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Nome</th>
+                  <th class="optional-col">E-mail</th>
+                  <th class="optional-col">Funções</th>
+                  <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for prospector in prospectors %}
+              <tr>
+                  <td>{{ prospector.count }}.</td>
+                  <td>{{ prospector.name }}</td>
+                  <td class="optional-col">{{ prospector.email }}</td>
+                  <td class="optional-col">{{ prospector.functions }}</td>
+                  <td>
+                  <a href="{{ edit }}{{ prospector.id }}">
+                      <button class="btn btn-danger">Editar</button></td>
+                  </a>
+                  </td>
+              </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+          </div>
+          <!-- /.card-body -->
+          <label><p></p></label>
+      </div>
+      </div>
+      <!-- /.card -->
+  <!-- /.row (main row) -->
+{% endblock %}
+
+{% block scripts %}
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.js' %}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.js' %}"></script>
+<script>
+  $(function () {
+    $('#ProspectorSelect').DataTable();
+  });
+</script>
+{% endblock scripts %}
