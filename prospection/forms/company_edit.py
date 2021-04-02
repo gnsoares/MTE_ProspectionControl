@@ -3,6 +3,7 @@
 #
 # Django
 from django import forms
+from django.db.utils import OperationalError
 
 # Project
 from prospection.forms.empty_choice import EmptyChoiceField
@@ -23,11 +24,16 @@ class CompanyEdit(forms.Form):
 
     main_contact = forms.EmailField(required=False)
 
-    activities = forms.MultipleChoiceField(
-        choices=tuple([
-            (i, a) for i, a in enumerate(Activity.objects.all().order_by('name'))
-        ])
-    )
+    try:
+        activities = forms.MultipleChoiceField(
+            choices=tuple([
+                (i, a)
+                for i, a in enumerate(Activity.objects.all().order_by('name'))
+            ])
+        )
+
+    except OperationalError:
+        pass
 
     seller = forms.ModelChoiceField(
         queryset=Prospector.objects.filter(is_seller=True).order_by('name')
