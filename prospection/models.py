@@ -9,14 +9,44 @@ from json.decoder import JSONDecodeError
 from django.db import models
 
 # Project
+from config.models import Category, ContractType, Fee, PaymentForm
 from store import store
 from trello import add_label_to_card, get_card, remove_card_label
-from utils import get_choices_from_store
+
+# Typing
+from typing import Tuple
 
 
 #
 # CODE
 #
+def get_choices(field: str) -> Tuple[Tuple[str, str]]:
+    """
+    Get the available choices for a field.
+    """
+    try:
+
+        # setup the field to model searcher
+        FIELD_TO_MODEL = {
+            'activities': Activity,
+            'categories': Category,
+            'contracts': ContractType,
+            'fees': Fee,
+            'payment-forms': PaymentForm,
+        }
+
+        # get the names of the choices
+        name_list = [obj.name for obj in FIELD_TO_MODEL[field].objects.all()]
+
+        # return tuple of choices
+        return tuple((name, name) for name in name_list)
+
+    # any error: return empty tuple
+    except Exception as e:
+        print(e)
+        return ()
+
+
 class Prospector(models.Model):
     """
     A prospector is any person in contact with a company.
@@ -81,7 +111,7 @@ class Company(models.Model):
     # company information
     name = models.CharField(max_length=100, unique=True)
     category = models.CharField(max_length=100,
-                                choices=get_choices_from_store('categories'),
+                                choices=get_choices('categories'),
                                 blank=True)
     main_contact = models.EmailField(blank=True)
 
@@ -96,7 +126,7 @@ class Company(models.Model):
                                    related_query_name='company',
                                    null=True)
     stage = models.CharField(max_length=100,
-                             choices=get_choices_from_store('stages'),
+                             choices=get_choices('stages'),
                              default=store['stages']['initial'])
     last_activity = models.DateField(default=dt.date.today)
     comments_number = models.PositiveSmallIntegerField(default=0)
@@ -260,13 +290,13 @@ class Contract(models.Model):
     payday = models.DateField(blank=True, null=True)
     contract_type = models.CharField(
         max_length=100,
-        choices=get_choices_from_store('contracts')
+        choices=get_choices('contracts')
     )
     fee_type = models.CharField(max_length=100,
-                                choices=get_choices_from_store('fees'))
+                                choices=get_choices('fees'))
     payment_form = models.CharField(
         max_length=100,
-        choices=get_choices_from_store('payment-forms'),
+        choices=get_choices('payment-forms'),
         blank=True
     )
     needs_receipt = models.BooleanField(default=False)

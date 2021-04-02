@@ -1,8 +1,4 @@
 {
-    "activities": {
-        "list": [],
-        "choices": {}
-    },
     "boards": {
         "sales": {
             "id": "",
@@ -13,14 +9,6 @@
             "url": ""
         }
     },
-    "categories": {
-        "list": ["generic"],
-        "choices": {"empty": "", "generic": "generic"}
-    },
-    "contracts": {
-        "list": [],
-        "choices": {}
-    },
     "closed-table": {
         "id": "",
         "range": "",
@@ -29,10 +17,6 @@
     "deadlines": {
         "attention": 8,
         "urgent": 15
-    },
-    "fees": {
-        "list": [],
-        "choices": {}
     },
     "labels": {
         "stage-list": [],
@@ -47,10 +31,6 @@
         "manual": "",
         "media-kit": "",
         "proposal": ""
-    },
-    "payment-forms": {
-        "list": [],
-        "choices": {}
     },
     "stages": {
         "list": [],

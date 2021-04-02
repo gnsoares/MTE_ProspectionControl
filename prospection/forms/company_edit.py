@@ -8,7 +8,7 @@ from django.db.utils import OperationalError
 # Project
 from prospection.forms.empty_choice import EmptyChoiceField
 from prospection.models import Activity, Prospector
-from utils import get_choices_from_store
+from prospection.models import get_choices
 
 
 #
@@ -18,9 +18,7 @@ class CompanyEdit(forms.Form):
 
     name = forms.CharField(max_length=100)
 
-    category = forms.ChoiceField(
-        choices=get_choices_from_store('categories')
-    )
+    category = forms.ChoiceField(choices=get_choices('categories'))
 
     main_contact = forms.EmailField(required=False)
 
@@ -53,12 +51,12 @@ class CompanyEdit(forms.Form):
         required=False
     )
 
-    fee_type = EmptyChoiceField(choices=get_choices_from_store('fees'),
+    fee_type = EmptyChoiceField(choices=get_choices('fees'),
                                 required=False,
                                 empty_label='-----')
 
     contract_type = EmptyChoiceField(
-        choices=get_choices_from_store('contracts'),
+        choices=get_choices('contracts'),
         required=False,
         empty_label='-----'
     )
@@ -66,7 +64,7 @@ class CompanyEdit(forms.Form):
     intake = forms.IntegerField(required=False)
 
     payment_form = EmptyChoiceField(
-        choices=get_choices_from_store('payment-forms'),
+        choices=get_choices('payment-forms'),
         required=False,
         empty_label='-----'
     )
