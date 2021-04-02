@@ -1,0 +1,403 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block head %}
+<style>
+  @media (max-width: 797.68px){
+    .alert {
+      min-width: 85vw;
+    }
+    .small-box {
+      min-width: 45vw;
+    }
+    .info-box {
+      height: 110px;
+    }
+  }
+  @media (max-width: 992px){
+    .alert {
+      width: 40vw;
+    }
+    .small-box {
+      min-width: 30vw; 
+    }
+    .info-box {
+      height: 110px;
+    }
+  }
+  @media (min-width: 992px){
+    .small-box {
+      min-width: 20vw;
+      max-width: 30vw; 
+    }
+  }
+
+</style>
+{% endblock %}
+
+{% block content %}
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="col">
+            <!-- small box -->
+            <div class="small-box bg-primary">
+              <div class="inner">
+                <h3>Quadro do Trello</h3>
+                <p>Vendas</p>
+              </div>
+              <div class="icon">
+                <i class="fab fa-trello"></i>
+              </div>
+              <a href="{{ sales_board_url }}" class="small-box-footer" target="_blank" rel="noopener noreferrer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col">
+            <!-- small box -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>{{ companies.total_closed }}</h3>
+
+                <p>Empresas Fechadas</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-table"></i>
+              </div>
+              <a href="/closed_companies/" class="small-box-footer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col">
+            <!-- small box -->
+            <div class="small-box bg-teal">
+              <div class="inner">
+                <h3>{{ companies.total_contact }}</h3>
+
+                <p>Empresas em contato</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <a href="{{ sales_board_url }}" class="small-box-footer" target="_blank" rel="noopener noreferrer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col">
+            <!-- small box -->
+            <div class="small-box bg-secondary">
+              <div class="inner">
+                <h3>Carta Proposta</h3>
+
+                <p><br></p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-money-check-alt"></i>
+              </div>
+              <a href="{{ proposal_url }}" class="small-box-footer" target="_blank" rel="noopener noreferrer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col">
+            <!-- small box -->
+            <div class="small-box bg-primary">
+              <div class="inner">
+                <h3>Quadro do Trello</h3>
+                <p>Controle de Contratos</p>
+              </div>
+              <div class="icon">
+                <i class="fab fa-trello"></i>
+              </div>
+              <a href="{{ contracts_board_url }}" class="small-box-footer" target="_blank" rel="noopener noreferrer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col">
+              <!-- small box -->
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3>Planilha de<br>Contatos</h3>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-table"></i>
+                </div>
+                <a href="{{ contacts_table_url }}" class="small-box-footer" target="_blank" rel="noopener noreferrer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+          </div>
+          <div class="col">
+            <!-- small box -->
+            <div class="small-box bg-teal">
+              <div class="inner">
+                <h3>Manual de<br>Captação</h3>
+              </div>
+              <div class="icon">
+                <i class="far fa-copy"></i>
+              </div>
+              <a href="{{ manual_url }}" class="small-box-footer" target="_blank" rel="noopener noreferrer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+        <!-- ./col -->
+          <div class="col">
+            <!-- small box -->
+            <div class="small-box bg-secondary">
+              <div class="inner">
+                <h3>Mídia Kit</h3>
+
+                <p><br></p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-poll"></i>
+              </div>
+              <a href="{{ media_kit_url }}" class="small-box-footer" target="_blank" rel="noopener noreferrer">Mais informações <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+        </div>
+        <!-- /.row -->
+        <!-- Main row -->
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-12">
+            <a href="{{ urls.prospectors }}{{ urls.new }}">
+              <div class="info-box">
+                <span class="info-box-icon bg-danger"><i class="fas fa-user-plus"></i></span>
+
+                <div class="info-box-content">
+                  <span class="info-box-number"><h2><b>Adicionar Captador</b></h2></span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+            </a>
+          </div>
+          <!-- /.col -->                    
+          <div class="col-md-6 col-sm-6 col-12">
+            <a href="{{ urls.prospectors }}">
+              <div class="info-box">
+                <span class="info-box-icon bg-danger"><i class="fas fa-user-edit"></i></span>
+
+                <div class="info-box-content">
+                  <span class="info-box-number"><h2><b>Editar Captadores</b></h2></span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+            </a>
+          </div>
+          <!-- /.col -->                    
+          <div class="col-md-4 col-sm-6 col-12" style="min-width:33%;">
+            <a href="{{ urls.companies }}{{ urls.new }}">
+              <div class="info-box">
+                <span class="info-box-icon bg-danger"><i class="fas fa-comments"></i></span>
+
+                <div class="info-box-content">
+                  <span class="info-box-number"><h2><b>Adicionar Empresa</b></h2></span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+            </a>
+          </div>
+          <!-- /.col -->                    
+          <div class="col-md-4 col-sm-6 col-12" style="min-width:33%;">
+            <a href="{{ urls.companies }}{{ urls.close }}">
+              <div class="info-box bg-danger">
+                <span class="info-box-icon"><i class="fas fa-handshake"></i></span>
+
+                <div class="info-box-content">
+                  <span class="info-box-number"><h2><b>Fechar Empresa</b></h2></span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+            </a>
+          </div>
+          <!-- /.col -->                    
+          <div class="col-md-4 col-sm-6 col-12" style="min-width:33%;">
+            <a href="{{ urls.companies }}">
+              <div class="info-box">
+                <span class="info-box-icon bg-danger"><i class="fas fa-edit"></i></span>
+
+                <div class="info-box-content">
+                  <span class="info-box-number"><h2><b>Editar Empresas</b></h2></span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+            </a>
+          </div>
+          <!-- /.col -->                    
+        </div>
+        <!-- /.row (main row) -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-purple card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  Divisão Por Cotas
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="row">
+
+                  {% for fee in fees %}
+                  <div class="col">
+                    <div class="alert alert-info alert-dismissible">
+                      <h5><i class="icon fas fa-gem"></i>
+                        {{ fee.name }}
+                        <span class="badge bg-light float-right">{{ fee.count }}</span>
+                      </h5>
+                    </div>
+                  </div>
+                  {% endfor %}
+
+                </div>
+              </div>
+              <!-- /.card-body-->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-7">
+            <!-- BAR CHART -->
+            <div class="card card-purple card-outline">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Empresas Fechadas Por Mês</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart">
+                  <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <div class="col-md-5">
+            <!-- DONUT CHART -->
+              <div class="card card-purple card-outline">
+                <div class="card-header">
+                  <h3 class="card-title">Categorias das Empresas Fechadas</h3>
+
+                  <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+          </div>
+        </div>
+        <!-- /.row -->
+
+{% endblock %}
+
+{% block scripts %}
+<!-- ChartJS -->
+<script src="{% static 'plugins/chart.js/Chart.min.js' %}"></script>
+
+<script>
+  $(function () {
+    /* ChartJS
+     * -------
+     * Here we will create a few charts using ChartJS
+     */
+
+    //-------------
+    //- DONUT CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+    var donutData        = {
+      labels: {{ categories.labels|safe }},
+      datasets: [
+        {
+          data: {{ categories.data|safe }},
+          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc',
+                             '#33ffce', '#dc96da', '#3a3a3a', '#ff1212'],
+        }
+      ]
+    }
+    var donutOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    var donutChart = new Chart(donutChartCanvas, {
+      type: 'doughnut',
+      data: donutData,
+      options: donutOptions      
+    })
+
+    //-------------
+    //- BAR CHART -
+    //-------------
+
+    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var ChartData = {
+      labels  : ['July', 'August', 'September'],
+      datasets: [
+        {
+          label               : 'Startup',
+          backgroundColor     : 'rgba(210, 214, 222, 1)',
+          borderColor         : 'rgba(210, 214, 222, 1)',
+          pointRadius         : false,
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220, 220, 220, 1)',
+          data                : {{ closed_months.startups|safe }},
+        },
+        {
+          label               : 'Regular',
+          backgroundColor     : 'rgba(209, 129, 129, 0.9)',
+          borderColor         : 'rgba(209, 129, 129, 0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(209, 129, 129, 1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(209, 129, 129, 1)',
+          data                : {{ closed_months.regulars|safe }}
+        },
+      ],
+    }
+    var barChartData = jQuery.extend(true, {}, ChartData)
+    var temp0 = ChartData.datasets[0]
+    var temp1 = ChartData.datasets[1]
+    barChartData.datasets[0] = temp1
+    barChartData.datasets[1] = temp0
+
+    var barChartOptions = {
+      responsive              : true,
+      maintainAspectRatio     : false,
+      datasetFill             : false
+    }
+
+    var barChart = new Chart(barChartCanvas, {
+      type: 'bar', 
+      data: barChartData,
+      options: barChartOptions
+    })
+  })
+</script>
+{% endblock %}
