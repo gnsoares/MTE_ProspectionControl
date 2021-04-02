@@ -23,14 +23,14 @@ urlpatterns = [
          CompanyEdit.as_view(),
          name='company_edit'),
     path('companies/new/', CompanyNew.as_view(), name='company_new'),
-    path('companies', CompanySelect.as_view(), name='company_select'),
+    path('companies/', CompanySelect.as_view(), name='company_select'),
 
     # prospectors
     path('prospectors/edit/<int:id>/',
          ProspectorEdit.as_view(),
          name='prospector_edit'),
     path('prospectors/new/', ProspectorNew.as_view(), name='prospector_new'),
-    path('prospectors',
+    path('prospectors/',
          ProspectorSelect.as_view(),
          name='prospector_select'),
 

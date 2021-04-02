@@ -143,13 +143,13 @@
           <li class="nav-header"><i class="nav-icon fas fa-edit"></i> CAPTADORES</li>
 
           <li class="nav-item">
-            <a href="{{ prospectors }}{{ new }}" class="nav-link{% if new_hunter %} active{% endif %}">
+            <a href="{{ urls.prospectors }}{{ urls.new }}" class="nav-link{% if new_prospector %} active{% endif %}">
               <i class="far fa-circle nav-icon"></i>
               <p>Adicionar Captador(a)</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ prospectors }}{{ select }}" class="nav-link{% if edit_hunter %} active{% endif %}">
+            <a href="{{ urls.prospectors }}" class="nav-link{% if edit_prospector %} active{% endif %}">
               <i class="far fa-circle nav-icon"></i>
               <p>Editar Captador(a)</p>
             </a>
@@ -158,24 +158,23 @@
          <li class="nav-header"><i class="nav-icon fas fa-edit"></i> EMPRESAS</li>
 
           <li class="nav-item">
-            <a href="{{ companies }}{{ new }}" class="nav-link{% if new_company %} active{% endif %}">
+            <a href="{{ urls.companies }}{{ urls.new }}" class="nav-link{% if new_company %} active{% endif %}">
               <i class="far fa-circle nav-icon"></i>
               <p>Adicionar Empresa</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ companies }}{{ close }}" class="nav-link{% if close_company %} active{% endif %}">
+            <a href="{{ urls.companies }}{{ urls.close }}" class="nav-link{% if close_company %} active{% endif %}">
               <i class="far fa-circle nav-icon"></i>
               <p>Fechar Empresa</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ companies }}{{ select }}" class="nav-link{% if edit_company %} active{% endif %}">
+            <a href="{{ urls.companies }}" class="nav-link{% if edit_company %} active{% endif %}">
               <i class="far fa-circle nav-icon"></i>
               <p>Editar Infos de Empresa</p>
             </a>
           </li>
-          
 
         </ul>
       </nav>

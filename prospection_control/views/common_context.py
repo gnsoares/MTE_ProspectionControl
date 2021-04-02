@@ -20,9 +20,11 @@ COMMON_CONTEXT = {
     'media_kit_url': store['material']['media-kit'],
     'proposal_url': store['material']['proposal'],
     'sales_board_url': store['boards']['sales']['url'],
-    'prospectors': '/prospection/prospectors/',
-    'companies': '/prospection/companies/',
-    'close': 'close/',
-    'edit': 'edit/',
-    'new': 'new/',
+    'urls': {
+        'prospectors': '/prospection/prospectors',
+        'companies': '/prospection/companies',
+        'close': '/close/',
+        'edit': '/edit/',
+        'new': '/new/',
+    },
 }
