@@ -20,6 +20,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+# Project
+from prospection_control.views.closed_companies import closed_companies
+
 
 #
 # CODE
@@ -29,4 +32,6 @@ urlpatterns = [
     path('config/', include('config.urls')),
     path('prospection/', include('prospection.urls')),
     path("select2/", include("django_select2.urls")),
+
+    path("closed_companies/", closed_companies, name="closed_companies"),
 ]
