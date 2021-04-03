@@ -25,14 +25,19 @@ def get_least_prospector(function: str) -> Prospector:
     """
     Get a prospector with the least amount of contacts.
     """
+    # get the number of contacts of the prospector with the least contacts
     least_contact_count = sorted(
         Prospector.objects.filter(**{f'is_{function}': True}),
         key=lambda prospector: prospector.contact_count
     )[0].contact_count
+
+    # get all prospectors with the lowest count
     bottom_prospectors = list(filter(
         lambda prospector: prospector.contact_count == least_contact_count,
         Prospector.objects.all()
     ))
+
+    # return a random prospector with the lowest count
     return choice(bottom_prospectors)
 
 
@@ -79,6 +84,7 @@ def label_update(board_id: str) -> None:
 
 def sheet_update(company):
     """
+    Update the spreadsheet of the closed companies.
     """
     # get spreadsheet and API information
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
