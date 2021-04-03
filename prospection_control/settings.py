@@ -42,7 +42,7 @@ SECRET_KEY = get_env_var('SECRET_KEY')
 DEBUG = bool(os.environ.get('DEBUG'))
 
 ALLOWED_HOSTS = []
-
+ADMINS = [('dev', get_env_var('CONTACT'))]
 
 # Application definition
 
@@ -153,8 +153,5 @@ EMAIL_USE_TLS = bool(get_env_var('EMAIL_USE_TLS'))
 # Trello credentials
 TRELLO_TOKEN = get_env_var('TRELLO_TOKEN')
 TRELLO_KEY = get_env_var('TRELLO_KEY')
-
-# dev contact
-CONTACT = get_env_var('CONTACT')
 
 # django_heroku.settings(locals())
