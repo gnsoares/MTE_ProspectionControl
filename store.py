@@ -32,6 +32,7 @@ def get_store() -> dict:
 
     # update store
     store.update({
+        'automatic-assingment': loaded.get('automatic-assingment', True),
         'boards': {
             'sales': {
                 'id': loaded.get('boards', {}).get('sales', {}).get('id', ''),

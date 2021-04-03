@@ -31,6 +31,7 @@ class Update(View):
 
         # set form inital data
         form = self.form_class(initial={
+            'automatic_assignment': store['automatic-assingment'],
             'attention': store['deadlines']['attention'],
             'urgent': store['deadlines']['urgent'],
             'email_model': store['material']['email-model'],
@@ -118,6 +119,8 @@ class Update(View):
         if form.is_valid():
 
             # save form data in store
+            store['automatic-assingment'] = \
+                form.cleaned_data['automatic_assignment']
             store['deadlines']['attention'] = form.cleaned_data['attention']
             store['deadlines']['urgent'] = form.cleaned_data['urgent']
             store['material']['email-model'] = form.cleaned_data['email_model']

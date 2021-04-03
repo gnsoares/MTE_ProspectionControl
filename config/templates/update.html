@@ -116,45 +116,11 @@
                 </div>
             </div>
 
-            {% for activity in form.activities %}
-                <div class="form-group">
-                {{ activity.errors }}
-                <label for="{{ activity.id_for_label }}">Nome</label>
-                {% render_field activity class="form-control"%}
-                </div>
-            {% endfor %}
-
-            {% for category in form.categories %}
-                <div class="form-group">
-                {{ category.errors }}
-                <label for="{{ category.id_for_label }}">Nome</label>
-                {% render_field category class="form-control"%}
-                </div>
-            {% endfor %}
-
-            {% for contract in form.contracts %}
-                <div class="form-group">
-                {{ contract.errors }}
-                <label for="{{ contract.id_for_label }}">Nome</label>
-                {% render_field contract class="form-control"%}
-                </div>
-            {% endfor %}
-
-            {% for fee in form.fees %}
-                <div class="form-group">
-                {{ fee.errors }}
-                <label for="{{ fee.id_for_label }}">Nome</label>
-                {% render_field fee class="form-control"%}
-                </div>
-            {% endfor %}
-
-            {% for payment_form in form.payment_forms %}
-                <div class="form-group">
-                {{ payment_form.errors }}
-                <label for="{{ payment_form.id_for_label }}">Nome</label>
-                {% render_field payment_form class="form-control"%}
-                </div>
-            {% endfor %}
+              <div class="col-md-3 form-group">
+                {{ form.automatic_assignment.errors }}
+                <label for="{{ form.automatic_assignment.id_for_label }}">Atribuição automática de Empresas Fechadas</label>
+                {% render_field form.automatic_assignment class="form-control"%}
+              </div>
 
             <div class="card-footer">
               <button type="submit" class="btn btn-danger">Submit</button>

@@ -10,6 +10,8 @@ from django import forms
 #
 class Update(forms.Form):
 
+    automatic_assignment = forms.BooleanField()
+
     attention = forms.IntegerField()
     urgent = forms.IntegerField()
 
