@@ -20,8 +20,9 @@ GREETING = 'Olá, {0}!\n'
 SIGNATURE = ''.join(['\nQualquer dúvida ou problema favor entrar  ',
                      f'em contatopelo endereço {FROM_EMAIL}'])
 FUNCTION = {
-    'contract': 'o contrato.\n',
-    'postsale': 'a exposição.\n',
+    'seller': 'a negociação.\n',
+    'contractor': 'o contrato.\n',
+    'postseller': 'a exposição.\n',
 }
 
 

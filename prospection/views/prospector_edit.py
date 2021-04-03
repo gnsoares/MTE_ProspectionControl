@@ -13,10 +13,12 @@ from django.views import View
 # Project
 from prospection.forms.prospector_edit \
     import ProspectorEdit as ProspectorEditForm
-from prospection.models import Prospector
+from prospection.models import Company, Contract, Prospector
+from prospection.utils import get_least_prospector
 from prospection_control.views.common_context import COMMON_CONTEXT
+from reminders import new_company_reminder
 from store import store
-from trello import post_list
+from trello import post_list, put_card_in_list
 
 
 #
@@ -66,9 +68,12 @@ class ProspectorEdit(View):
 
             # prospector is not a seller anymore: deal with it
             if prospector.is_seller and not form.cleaned_data['is_seller']:
-                # TODO: reassign companies in this prospector's list
-                #       and remove list from board
-                pass
+
+                # assign each company to a new seller and notify them
+                for company in Company.objects.filter(prospector=prospector):
+                    new = get_least_prospector('seller')
+                    put_card_in_list(company.card_id, new.list_id_sales)
+                    new_company_reminder(company, new, 'seller')
 
             # prospector is now seller: create their list and save its id
             if not prospector.is_seller and form.cleaned_data['is_seller']:
@@ -82,9 +87,12 @@ class ProspectorEdit(View):
             # prospector is not a contractor anymore: deal with it
             if prospector.is_contractor and \
                not form.cleaned_data['is_contractor']:
-                # TODO: reassign companies in this prospector's list
-                #       and remove list from board
-                pass
+
+                # assign each company to a new contractor and notify them
+                for company in Contract.objects.filter(contractor=prospector):
+                    new = get_least_prospector('contractor')
+                    put_card_in_list(company.card_id, new.list_id_contracts)
+                    new_company_reminder(company, new, 'contractor')
 
             # prospector is now contractor: create their list and save its id
             if not prospector.is_contractor and \
@@ -95,6 +103,15 @@ class ProspectorEdit(View):
                 )
                 prospector_contracts_list = response.json()
                 prospector.list_id_contracts = prospector_contracts_list['id']
+
+            # prospector is not a contractor anymore: deal with it
+            if prospector.is_postseller and \
+               not form.cleaned_data['is_postseller']:
+
+                # assign each company to a new postseller and notify them
+                for company in Contract.objects.filter(postseller=prospector):
+                    new = get_least_prospector('postseller')
+                    new_company_reminder(company, new, 'postseller')
 
             # update prospector values
             prospector.email = form.cleaned_data['email']

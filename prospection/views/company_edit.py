@@ -16,6 +16,7 @@ from prospection.forms.company_edit \
 from prospection.models import Company, Contract
 from prospection_control.views.common_context import COMMON_CONTEXT
 from store import store
+from trello import put_card_in_list
 
 
 #
@@ -89,14 +90,14 @@ class CompanyEdit(View):
 
             # company has a new seller anymore: deal with it
             if company.prospector != form.cleaned_data['seller']:
-                # TODO: move company card
-                pass
+                put_card_in_list(company.card_id,
+                                 form.cleaned_data['seller'].list_id)
 
             # company has a new contractor anymore: deal with it
             if contract is not None and \
                contract.contractor != form.cleaned_data['contractor']:
-                # TODO: move company card
-                pass
+                put_card_in_list(contract.card_id,
+                                 form.cleaned_data['contractor'].list_id)
 
             # update company values
             company.name = form.cleaned_data['name']
