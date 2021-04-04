@@ -27,7 +27,8 @@ class CompanyEdit(forms.Form):
             choices=tuple([
                 (i, a)
                 for i, a in enumerate(Activity.objects.all().order_by('name'))
-            ])
+            ]),
+            required=False
         )
 
     except OperationalError:

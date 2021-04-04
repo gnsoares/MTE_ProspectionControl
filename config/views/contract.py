@@ -60,6 +60,8 @@ class New(View):
         if not os.environ['DEBUG']:
             return HttpResponse('Something went wrong')
 
+        return HttpResponse(form.errors)
+
 
 class Edit(View):
 
@@ -112,6 +114,8 @@ class Edit(View):
         # not debugging: return generic error message
         if not os.environ['DEBUG']:
             return HttpResponse('Something went wrong')
+
+        return HttpResponse(form.errors)
 
 
 class Remove(View):

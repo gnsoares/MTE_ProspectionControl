@@ -33,11 +33,11 @@ ACTION_TRANSLATOR = {
 OBJECT_TRANSLATOR = {
     'companies': {
         'title': 'Empresa',
-        'do_more': 'o(a) captador(a)',
+        'do_more': 'a empresa',
     },
     'prospectors': {
         'title': 'Captador',
-        'do_more': 'a empresa',
+        'do_more': 'o(a) captador(a)',
     },
 }
 SELECTORS = {
@@ -67,7 +67,7 @@ def success(request, object: str, action: str, id: int):
             'do_more': {
                 'url': f'/prospection/{object}' +
                        '/action' if action != 'edit' else '',
-                'text': f'{ACTION_TRANSLATOR[action]["infinitve"]} '
+                'text': f'{ACTION_TRANSLATOR[action]["infinitive"]} '
                         f'outr{OBJECT_TRANSLATOR[object]["do_more"]}',
             },
         },

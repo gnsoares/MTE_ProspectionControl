@@ -128,3 +128,5 @@ class ProspectorEdit(View):
         # not debugging: return generic error message
         if not os.environ['DEBUG']:
             return HttpResponse('Something went wrong')
+
+        return HttpResponse(form.errors)

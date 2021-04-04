@@ -3,6 +3,7 @@
 #
 # Python std library
 import os
+from json.decoder import JSONDecodeError
 
 # Django
 from django.http import HttpResponse, HttpResponseRedirect
@@ -14,7 +15,6 @@ from django.views import View
 from prospection.forms.company_new import CompanyNew as CompanyNewForm
 from prospection.models import Company
 from prospection_control.views.common_context import COMMON_CONTEXT
-from store import store
 from trello import post_card
 
 
@@ -60,9 +60,14 @@ class CompanyNew(View):
             # create company card and save its id
             response = post_card(
                 company.name,
-                store['boards']['sales']['id']
+                form.cleaned_data['seller'].list_id_sales
             )
-            company_card = response.json()
+            try:
+                company_card = response.json()
+            except JSONDecodeError:
+                if not os.environ['DEBUG']:
+                    return HttpResponse('Something went wrong')
+                return HttpResponse(response.status_code, response.text)
             company.card_id = company_card['id']
 
             # save company to db
@@ -73,8 +78,8 @@ class CompanyNew(View):
                 f'{request.path}{company.id}/success/'
             )
 
-        else:
-            pass
         # not debugging: return generic error message
         if not os.environ['DEBUG']:
             return HttpResponse('Something went wrong')
+
+        return HttpResponse(form.errors)

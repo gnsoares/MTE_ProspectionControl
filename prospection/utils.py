@@ -34,7 +34,7 @@ def get_least_prospector(function: str) -> Prospector:
     # get all prospectors with the lowest count
     bottom_prospectors = list(filter(
         lambda prospector: prospector.contact_count == least_contact_count,
-        Prospector.objects.all()
+        Prospector.objects.filter(**{f'is_{function}': True})
     ))
 
     # return a random prospector with the lowest count

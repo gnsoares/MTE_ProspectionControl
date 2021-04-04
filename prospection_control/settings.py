@@ -41,7 +41,7 @@ SECRET_KEY = get_env_var('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DEBUG'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cdf957b1d69d.ngrok.io', 'localhost']
 ADMINS = [('dev', get_env_var('CONTACT'))]
 
 # Application definition

@@ -3,6 +3,7 @@
 #
 # Python std library
 import os
+from json.decoder import JSONDecodeError
 
 # Django
 from django.http import HttpResponse, HttpResponseRedirect
@@ -14,7 +15,7 @@ from django.views import View
 from prospection.forms.company_close \
     import CompanyClose as CompanyCloseForm
 from prospection.models import Contract
-from prospection.utils import get_least_prospector
+from prospection.utils import get_least_prospector, sheet_update
 from prospection_control.views.common_context import COMMON_CONTEXT
 from reminders import new_company_reminder
 from store import store
@@ -77,8 +78,13 @@ class CompanyClose(View):
             )
 
             # create card and save its id
-            response = post_card(company.name, store['boards']['sales']['id'])
-            contract_card = response.json()
+            response = post_card(company.name, contractor.list_id_contracts)
+            try:
+                contract_card = response.json()
+            except JSONDecodeError:
+                if not os.environ['DEBUG']:
+                    return HttpResponse('Something went wrong')
+                return HttpResponse(response.status_code, response.text)
             contract.card_id = contract_card['id']
 
             # save contract to db
@@ -94,9 +100,14 @@ class CompanyClose(View):
             new_company_reminder(company, contractor, 'contractor')
             new_company_reminder(company, postseller, 'postseller')
 
+            # save in closed companies table
+            sheet_update(company)
+
             # render success page
-            return HttpResponseRedirect(f'{request.path}success/')
+            return HttpResponseRedirect(f'{request.path}{company.id}/success/')
 
         # not debugging: return generic error message
         if not os.environ['DEBUG']:
             return HttpResponse('Something went wrong')
+
+        return HttpResponse(form.errors)

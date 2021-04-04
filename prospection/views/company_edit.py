@@ -91,13 +91,15 @@ class CompanyEdit(View):
             # company has a new seller anymore: deal with it
             if company.prospector != form.cleaned_data['seller']:
                 put_card_in_list(company.card_id,
-                                 form.cleaned_data['seller'].list_id)
+                                 form.cleaned_data['seller'].list_id_sales)
 
             # company has a new contractor anymore: deal with it
             if contract is not None and \
                contract.contractor != form.cleaned_data['contractor']:
-                put_card_in_list(contract.card_id,
-                                 form.cleaned_data['contractor'].list_id)
+                put_card_in_list(
+                    contract.card_id,
+                    form.cleaned_data['contractor'].list_id_contracts
+                )
 
             # update company values
             company.name = form.cleaned_data['name']
@@ -131,3 +133,5 @@ class CompanyEdit(View):
         # not debugging: return generic error message
         if not os.environ['DEBUG']:
             return HttpResponse('Something went wrong')
+
+        return HttpResponse(form.errors)

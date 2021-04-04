@@ -61,7 +61,7 @@ class ProspectorSelect(View):
             {
                 **COMMON_CONTEXT,
                 'action': request.path,
-                'edit': 'prospectors/edit/',
+                'edit': 'edit/',
                 'page_name': self.title,
                 'prospectors': prospectors,
             },

@@ -39,7 +39,7 @@ class CompanySelect(View):
             {
                 **COMMON_CONTEXT,
                 'action': request.path,
-                'edit': 'companies/edit/',
+                'edit': 'edit/',
                 'page_name': self.title,
                 'companies': companies,
             },
