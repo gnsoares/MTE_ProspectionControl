@@ -1,0 +1,10 @@
+env/
+**/migrations
+**/__pycache__
+secret_key.py
+
+*.txt
+*.sqlite3
+*.db
+*.json
+ngrok

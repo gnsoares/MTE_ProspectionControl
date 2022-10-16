@@ -1,0 +1,1 @@
+web: gunicorn talento-bot.wsgi --log-file -
